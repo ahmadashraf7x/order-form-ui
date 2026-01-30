@@ -7,27 +7,20 @@ import { validateStudentInfo } from "@/utils/validateStudentInfo";
 
 export default function StudentInfoStep({ submitAttempted }: { submitAttempted: boolean }) {
     const {
+        studentInfo,
+        setStudentInfo,
         sessionsPerMonth,
         setSessionsPerMonth,
     } = useOrder();
-
-    const [formData, setFormData] = useState({
-        fullName: "",
-        email: "",
-        phone: "",
-        country: "",
-        city: "",
-        address: "",
-    });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
         if (!submitAttempted) return;
 
-        const validationErrors = validateStudentInfo(formData);
+        const validationErrors = validateStudentInfo(studentInfo);
         setErrors(validationErrors);
-    }, [submitAttempted, formData]);
+    }, [submitAttempted, studentInfo]);
 
 
     return (
@@ -43,9 +36,9 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     type="text"
                     placeholder="Enter full name"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
-                    value={formData.fullName}
+                    value={studentInfo.fullName}
                     onChange={(e) =>
-                        setFormData({ ...formData, fullName: e.target.value })}
+                        setStudentInfo({ ...studentInfo, fullName: e.target.value })}
 
                 />
                 {errors.fullName && (
@@ -61,9 +54,9 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     type="email"
                     placeholder="Enter email address"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
-                    value={formData.email}
+                    value={studentInfo.email}
                     onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })}
+                        setStudentInfo({ ...studentInfo, email: e.target.value })}
 
                 />
                 {errors.email && (
@@ -80,9 +73,9 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     type="tel"
                     placeholder="+20 1xxxxxxxxx"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
-                    value={formData.phone}
+                    value={studentInfo.phone}
                     onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })}
+                        setStudentInfo({ ...studentInfo, phone: e.target.value })}
 
                 />
                 {errors.phone && (
@@ -96,9 +89,9 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     Country
                 </label>
                 <select
-                    value={formData.country}
+                    value={studentInfo.country}
                     onChange={(e) =>
-                        setFormData({ ...formData, country: e.target.value })
+                        setStudentInfo({ ...studentInfo, country: e.target.value })
                     }
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none">
 
@@ -122,9 +115,9 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     type="text"
                     placeholder="Enter city"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
-                    value={formData.city}
+                    value={studentInfo.city}
                     onChange={(e) =>
-                        setFormData({ ...formData, city: e.target.value })}
+                        setStudentInfo({ ...studentInfo, city: e.target.value })}
 
                 />
                 {errors.city && (
@@ -140,9 +133,9 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     type="text"
                     placeholder="Enter address"
                     className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
-                    value={formData.address}
+                    value={studentInfo.address}
                     onChange={(e) =>
-                        setFormData({ ...formData, address: e.target.value })}
+                        setStudentInfo({ ...studentInfo, address: e.target.value })}
 
                 />
                 {errors.address && (
