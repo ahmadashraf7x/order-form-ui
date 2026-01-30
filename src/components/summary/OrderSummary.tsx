@@ -1,3 +1,4 @@
+"use client";
 export default function OrderSummary() {
   return (
     <aside className="rounded-lg bg-white p-6 shadow-sm">
