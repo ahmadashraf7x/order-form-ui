@@ -1,29 +1,19 @@
+import { PricingConfig } from "@/types/pricing";
+
 export function calculateTotalPrice(
   sessionsPerMonth: number,
-  duration: number
+  duration: number,
+  pricing: PricingConfig
 ) {
-  const pricePerSession = 20;
+  const baseMonthly = sessionsPerMonth * pricing.pricePerSession;
+  const discountRate = pricing.discounts[duration] ?? 0;
 
-  const monthlyPrice = sessionsPerMonth * pricePerSession;
-  const baseTotal = monthlyPrice * duration;
-
-  let discountRate = 0;
-
-  if (duration >= 18) {
-    discountRate = 0.15;
-  } else if (duration >= 12) {
-    discountRate = 0.1;
-  } else if (duration >= 9) {
-    discountRate = 0.05;
-  }
-
-  const discountAmount = baseTotal * discountRate;
-  const finalTotal = baseTotal - discountAmount;
+  const discountAmount = baseMonthly * discountRate;
+  const monthlyAfterDiscount = baseMonthly - discountAmount;
+  const finalTotal = monthlyAfterDiscount * duration;
 
   return {
-    pricePerSession,
-    monthlyPrice,
-    baseTotal,
+    monthlyPrice: baseMonthly,
     discountRate,
     discountAmount,
     finalTotal,
