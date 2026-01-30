@@ -8,6 +8,8 @@ export default function PlanStep() {
   const {
     duration,
     setDuration,
+    payInAdvance,
+    setPayInAdvance,
   } = useOrder();
 
   return (
@@ -37,6 +39,26 @@ export default function PlanStep() {
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="flex items-center justify-between rounded-md border p-4">
+        <span className="text-sm text-gray-700">
+          Pay in advance <span className="text-green-600 font-medium">+5% discount</span>
+        </span>
+
+        <button
+          type="button"
+          onClick={() => setPayInAdvance(!payInAdvance)}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition
+            ${payInAdvance ? "bg-blue-600" : "bg-gray-300"}
+          `}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition
+              ${payInAdvance ? "translate-x-6" : "translate-x-1"}
+            `}
+          />
+        </button>
       </div>
 
 

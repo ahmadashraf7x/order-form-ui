@@ -7,7 +7,7 @@ import { calculateTotalPrice } from "@/utils/priceCalculator";
 import { PricingConfig } from "@/types/pricing";
 
 export default function OrderSummary() {
-  const { duration, sessionsPerMonth } = useOrder();
+  const { duration, sessionsPerMonth, payInAdvance } = useOrder();
   const [pricing, setPricing] = useState<PricingConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ export default function OrderSummary() {
   if (!sessionsPerMonth || !duration) {
     return (
       <aside className="rounded-lg bg-white p-6 shadow-md text-gray-700">
-        Please select duration of sessions.
+        Please select duration and number of sessions.
       </aside>
     );
   }
@@ -56,7 +56,7 @@ export default function OrderSummary() {
     discountRate,
     discountAmount,
     finalTotal,
-  } = calculateTotalPrice(sessionsPerMonth, duration, pricing);
+  } = calculateTotalPrice(sessionsPerMonth, duration, pricing, payInAdvance);
 
   return (
     <aside className="rounded-lg bg-white p-6 shadow-md">
