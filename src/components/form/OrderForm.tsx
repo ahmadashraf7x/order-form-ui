@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StudentInfoStep from "./StudentInfoStep";
 import { useOrder } from "@/hooks/useOrder";
 import { validateStudentInfo } from "@/utils/validateStudentInfo";
@@ -11,32 +11,57 @@ export default function OrderForm() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+    const [isOrderValid, setIsOrderValid] = useState(false);
+
+    useEffect(() => {
+        setError(null);
+        setSuccess(false);
+        setIsOrderValid(false);
+    }, [studentInfo, sessionsPerMonth, duration]);
+
+
 
     const handleContinue = async () => {
-  setSubmitAttempted(true);
-  setError(null);
+        setSubmitAttempted(true);
+        setError(null);
+        setSuccess(false);
+        setIsOrderValid(false);
 
-  const errors = validateStudentInfo(studentInfo);
-  if (Object.keys(errors).length > 0) return;
+        const studentErrors = validateStudentInfo(studentInfo);
+        if (Object.keys(studentErrors).length > 0) {
+            setError("Please fill all required student information");
+            return;
+        }
 
-  setLoading(true);
+        if (!sessionsPerMonth) {
+            setError("Please select number of sessions");
+            return;
+        }
 
-  try {
-    const data = await submitOrder({
-      studentInfo,
-      duration,
-      sessionsPerMonth,
-    });
+        if (!duration) {
+            setError("Please select duration");
+            return;
+        }
 
-    setSuccess(true);
-    console.log("ORDER SUBMITTED", data);
-  } catch (err) {
-    setError("Failed to submit order. Please try again.");
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
+        setIsOrderValid(true);
+
+        setLoading(true);
+        try {
+            const data = await submitOrder({
+                studentInfo,
+                duration,
+                sessionsPerMonth,
+            });
+
+            setSuccess(true);
+            console.log("ORDER SUBMITTED", data);
+        } catch {
+            setError("Failed to submit order");
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <section className="lg:col-span-2 rounded-lg bg-white p-6 shadow-sm">
@@ -59,7 +84,11 @@ export default function OrderForm() {
                     disabled={loading}
                     className="rounded-md bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
                 >
-                    {loading ? "Submitting..." : "Continue to Payment"}
+                    {loading
+                        ? "Submitting..."
+                        : isOrderValid
+                            ? "Proceed to Payment"
+                            : "Continue"}
                 </button>
             </div>
         </section>

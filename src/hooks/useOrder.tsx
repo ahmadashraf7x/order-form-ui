@@ -4,9 +4,9 @@ import { DurationOption, StudentInfo } from "@/types/order";
 import { createContext, useContext, useState } from "react";
 
 type OrderContextType = {
-  duration: DurationOption;
+  duration: DurationOption | null;
   setDuration: (d: DurationOption) => void;
-  sessionsPerMonth: number;
+  sessionsPerMonth: number | null;
   setSessionsPerMonth: (n: number) => void;
   studentInfo: StudentInfo;
   setStudentInfo: (data: StudentInfo) => void;
@@ -16,8 +16,8 @@ type OrderContextType = {
 const OrderContext = createContext<OrderContextType | null>(null);
 
 export function OrderProvider({ children }: { children: React.ReactNode }) {
-  const [duration, setDuration] = useState<DurationOption>(6);
-  const [sessionsPerMonth, setSessionsPerMonth] = useState(8);
+  const [duration, setDuration] = useState<DurationOption | null>(null);
+  const [sessionsPerMonth, setSessionsPerMonth] = useState<number | null>(null);
   const [studentInfo, setStudentInfo] = useState<StudentInfo>({
     fullName: "",
     email: "",

@@ -8,7 +8,7 @@ import { PricingConfig } from "@/types/pricing";
 
 export default function OrderSummary() {
   const { duration, sessionsPerMonth } = useOrder();
-const [pricing, setPricing] = useState<PricingConfig | null>(null);
+  const [pricing, setPricing] = useState<PricingConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,6 +39,14 @@ const [pricing, setPricing] = useState<PricingConfig | null>(null);
     return (
       <aside className="rounded-lg bg-white p-6 shadow-md text-red-600">
         {error ?? "Something went wrong"}
+      </aside>
+    );
+  }
+
+  if (!sessionsPerMonth || !duration) {
+    return (
+      <aside className="rounded-lg bg-white p-6 shadow-md text-gray-700">
+        Please select duration of sessions.
       </aside>
     );
   }

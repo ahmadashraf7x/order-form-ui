@@ -1,4 +1,5 @@
 import { StudentInfo } from "@/types/order";
+
 export function validateStudentInfo(data: StudentInfo) {
     const errors: Partial<Record<keyof StudentInfo, string>> = {};
 
