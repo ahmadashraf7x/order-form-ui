@@ -1,5 +1,6 @@
 "use client";
-import { useOrder, DurationOption } from "@/hooks/useOrder";
+import { useOrder } from "@/hooks/useOrder";
+import { DurationOption } from "@/types/order";
 
 const durations: DurationOption[] = [6, 9, 12, 18, 24, 36];
 
@@ -15,7 +16,7 @@ export default function PlanStep() {
         Order overview
       </h3>
 
-    
+
       <div className="mb-6">
         <p className="mb-2 text-sm font-medium text-gray-600">
           Duration
@@ -27,10 +28,9 @@ export default function PlanStep() {
               key={d}
               onClick={() => setDuration(d)}
               className={`rounded-md border px-3 py-2 text-sm transition
-                ${
-                  duration === d
-                    ? "border-blue-600 bg-blue-50 text-blue-700"
-                    : "border-gray-200 text-gray-600 hover:border-gray-400"
+                ${duration === d
+                  ? "border-blue-600 bg-blue-50 text-blue-700"
+                  : "border-gray-200 text-gray-600 hover:border-gray-400"
                 }`}
             >
               {d} months
@@ -39,8 +39,8 @@ export default function PlanStep() {
         </div>
       </div>
 
-     
-      
+
+
     </section>
   );
 }

@@ -1,12 +1,4 @@
-export type StudentInfo = {
-    fullName: string;
-    email: string;
-    phone: string;
-    country: string;
-    city: string;
-    address: string;
-};
-
+import { StudentInfo } from "@/types/order";
 export function validateStudentInfo(data: StudentInfo) {
     const errors: Partial<Record<keyof StudentInfo, string>> = {};
 

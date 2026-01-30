@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server";
+import { StudentInfo, DurationOption } from "@/types/order";
+
+type OrderRequestBody = {
+    studentInfo: StudentInfo;
+    duration: DurationOption;
+    sessionsPerMonth: number;
+};
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
+        const body: OrderRequestBody = await req.json();
 
         const { studentInfo, duration, sessionsPerMonth } = body;
 
