@@ -2,6 +2,7 @@
 
 import { DurationOption, StudentInfo } from "@/types/order";
 import { createContext, useContext, useState } from "react";
+type paymentMethod = "card" | "bank"
 
 type OrderContextType = {
   duration: DurationOption | null;
@@ -12,6 +13,8 @@ type OrderContextType = {
   setStudentInfo: (data: StudentInfo) => void;
   payInAdvance: boolean;
   setPayInAdvance: (v: boolean) => void;
+  paymentMethod: paymentMethod | null;
+  setPaymentMethod: (m: paymentMethod) => void;
 
 };
 
@@ -21,6 +24,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [duration, setDuration] = useState<DurationOption | null>(null);
   const [sessionsPerMonth, setSessionsPerMonth] = useState<number | null>(null);
   const [payInAdvance, setPayInAdvance] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<paymentMethod | null>(null);
   const [studentInfo, setStudentInfo] = useState<StudentInfo>({
     fullName: "",
     email: "",
@@ -42,6 +46,8 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
         setStudentInfo,
         payInAdvance,
         setPayInAdvance,
+        paymentMethod,
+        setPaymentMethod,
       }}
     >
       {children}

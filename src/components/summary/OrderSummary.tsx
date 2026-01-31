@@ -7,7 +7,7 @@ import { calculateTotalPrice } from "@/utils/priceCalculator";
 import { PricingConfig } from "@/types/pricing";
 
 export default function OrderSummary() {
-  const { duration, sessionsPerMonth, payInAdvance } = useOrder();
+  const { duration, sessionsPerMonth, payInAdvance, paymentMethod } = useOrder();
   const [pricing, setPricing] = useState<PricingConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,6 +80,23 @@ export default function OrderSummary() {
         </div>
 
         <div className="flex justify-between">
+          <span>Payment method</span>
+          <span className="font-medium text-gray-900">
+            {paymentMethod
+              ? paymentMethod === "card"
+                ? "Card"
+                : "Bank transfer"
+              : "Not selected"}
+          </span>
+        </div>
+        {payInAdvance && (
+          <div className="flex justify-between text-green-600">
+            <span>Pay in advance</span>
+            <span>Yes</span>
+          </div>
+        )}
+
+        <div className="flex justify-between">
           <span>Monthly price</span>
           <span className="font-medium text-gray-900">
             ${monthlyPrice.toFixed(2)}
@@ -99,6 +116,7 @@ export default function OrderSummary() {
           <span>Total</span>
           <span>${finalTotal.toFixed(2)}</span>
         </div>
+
       </div>
     </aside>
   );

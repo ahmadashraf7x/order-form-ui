@@ -7,17 +7,16 @@ import { submitOrder } from "@/services/order.service";
 
 export default function OrderForm() {
     const [submitAttempted, setSubmitAttempted] = useState(false);
-    const { studentInfo, duration, sessionsPerMonth } = useOrder();
+    const { studentInfo, duration, sessionsPerMonth, paymentMethod } = useOrder();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
-    const [isOrderValid, setIsOrderValid] = useState(false);
+
 
     useEffect(() => {
         setError(null);
         setSuccess(false);
-        setIsOrderValid(false);
-    }, [studentInfo, sessionsPerMonth, duration]);
+    }, [studentInfo, sessionsPerMonth, duration, paymentMethod]);
 
 
 
@@ -25,11 +24,15 @@ export default function OrderForm() {
         setSubmitAttempted(true);
         setError(null);
         setSuccess(false);
-        setIsOrderValid(false);
 
         const studentErrors = validateStudentInfo(studentInfo);
         if (Object.keys(studentErrors).length > 0) {
             setError("Please fill all required student information");
+            return;
+        }
+
+        if (!paymentMethod) {
+            setError("Please select a payment method");
             return;
         }
 
@@ -43,7 +46,6 @@ export default function OrderForm() {
             return;
         }
 
-        setIsOrderValid(true);
 
         setLoading(true);
         try {
@@ -86,7 +88,7 @@ export default function OrderForm() {
                 >
                     {loading
                         ? "Submitting..."
-                        : isOrderValid
+                        : success
                             ? "Proceed to Payment"
                             : "Continue"}
                 </button>
