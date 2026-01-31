@@ -5,12 +5,14 @@ import { validateStudentInfo } from "@/utils/validateStudentInfo";
 
 
 
-export default function StudentInfoStep({ submitAttempted }: { submitAttempted: boolean }) {
+export default function StudentInfoStep() {
     const {
         studentInfo,
         setStudentInfo,
         sessionsPerMonth,
         setSessionsPerMonth,
+        submitAttempted,
+        setSubmitAttempted
     } = useOrder();
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -37,9 +39,15 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     placeholder="Enter full name"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.fullName}
-                    onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, fullName: e.target.value })}
+                    onChange={(e) => {
+                        setStudentInfo({ ...studentInfo, fullName: e.target.value });
 
+                        setErrors((prev) => {
+                            const copy = { ...prev };
+                            delete copy.fullName;
+                            return copy;
+                        });
+                    }}
                 />
                 {errors.fullName && (
                     <p className="mt-1 text-xs text-red-600">{errors.fullName}</p>
@@ -55,8 +63,15 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     placeholder="Enter email address"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.email}
-                    onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, email: e.target.value })}
+                    onChange={(e) => {
+                        setStudentInfo({ ...studentInfo, email: e.target.value });
+
+                        setErrors((prev) => {
+                            const copy = { ...prev };
+                            delete copy.email;
+                            return copy;
+                        });
+                    }}
 
                 />
                 {errors.email && (
@@ -74,9 +89,15 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     placeholder="+20 1xxxxxxxxx"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.phone}
-                    onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, phone: e.target.value })}
+                    onChange={(e) => {
+                        setStudentInfo({ ...studentInfo, phone: e.target.value });
 
+                        setErrors((prev) => {
+                            const copy = { ...prev };
+                            delete copy.phone;
+                            return copy;
+                        });
+                    }}
                 />
                 {errors.phone && (
                     <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
@@ -90,9 +111,15 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                 </label>
                 <select
                     value={studentInfo.country}
-                    onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, country: e.target.value })
-                    }
+                    onChange={(e) => {
+                        setStudentInfo({ ...studentInfo, country: e.target.value });
+
+                        setErrors((prev) => {
+                            const copy = { ...prev };
+                            delete copy.country;
+                            return copy;
+                        });
+                    }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none">
 
                     <option value="">Select country</option>
@@ -116,8 +143,15 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     placeholder="Enter city"
                     className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.city}
-                    onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, city: e.target.value })}
+                    onChange={(e) => {
+                        setStudentInfo({ ...studentInfo, city: e.target.value });
+
+                        setErrors((prev) => {
+                            const copy = { ...prev };
+                            delete copy.city;
+                            return copy;
+                        });
+                    }}
 
                 />
                 {errors.city && (
@@ -134,8 +168,15 @@ export default function StudentInfoStep({ submitAttempted }: { submitAttempted: 
                     placeholder="Enter address"
                     className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.address}
-                    onChange={(e) =>
-                        setStudentInfo({ ...studentInfo, address: e.target.value })}
+                    onChange={(e) => {
+                        setStudentInfo({ ...studentInfo, address: e.target.value });
+
+                        setErrors((prev) => {
+                            const copy = { ...prev };
+                            delete copy.address;
+                            return copy;
+                        });
+                    }}
 
                 />
                 {errors.address && (

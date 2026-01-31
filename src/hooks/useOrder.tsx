@@ -15,6 +15,8 @@ type OrderContextType = {
   setPayInAdvance: (v: boolean) => void;
   paymentMethod: paymentMethod | null;
   setPaymentMethod: (m: paymentMethod) => void;
+  submitAttempted: boolean;
+  setSubmitAttempted: (v: boolean) => void;
 
 };
 
@@ -25,6 +27,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [sessionsPerMonth, setSessionsPerMonth] = useState<number | null>(null);
   const [payInAdvance, setPayInAdvance] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<paymentMethod | null>(null);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const [studentInfo, setStudentInfo] = useState<StudentInfo>({
     fullName: "",
     email: "",
@@ -48,6 +51,8 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
         setPayInAdvance,
         paymentMethod,
         setPaymentMethod,
+        submitAttempted,
+        setSubmitAttempted,
       }}
     >
       {children}
