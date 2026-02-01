@@ -30,4 +30,21 @@ body {
   direction: rtl;
 }
 
+.react-tel-input .form-control {
+  color: #111827 !important;
+  font-weight: 500 !important;
+}
+
+.react-tel-input .country-list .country {
+  color: #111827 !important;
+  font-weight: 500;
+}
+
+.react-tel-input .country-list .country .dial-code {
+  color: #374151 !important;
+}
+
+.react-tel-input .search-box {
+  color: #111827 !important;
+}
 

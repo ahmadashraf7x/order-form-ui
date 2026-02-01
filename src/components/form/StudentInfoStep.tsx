@@ -1,8 +1,12 @@
 "use client";
 import { useOrder } from "@/hooks/useOrder";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { validateStudentInfo } from "@/utils/validateStudentInfo";
-
+import "react-phone-input-2/lib/style.css";
+import PhoneInput, { CountryData } from "react-phone-input-2";
+import countryList from "react-select-country-list";
+import Select from "react-select";
+import { customStyles } from "@/styles/reactSelectStyles";
 
 
 export default function StudentInfoStep() {
@@ -16,32 +20,45 @@ export default function StudentInfoStep() {
     } = useOrder();
 
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const countries = useMemo(() => countryList().getData(), []);
+
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    const sessionOptions = [
+        { value: 4, label: "4 sessions" },
+        { value: 8, label: "8 sessions" },
+        { value: 12, label: "12 sessions" },
+        { value: 16, label: "16 sessions" },
+    ];
+
+    
 
     useEffect(() => {
         if (!submitAttempted) return;
-
         const validationErrors = validateStudentInfo(studentInfo);
         setErrors(validationErrors);
     }, [submitAttempted, studentInfo]);
-
 
     return (
         <div className="space-y-6">
             <h3 className="text-lg font-semibold text-gray-800">
                 Student information
             </h3>
+
             <div>
-                <label className="mb-1 block text-sm text-gray-600">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
                     Full name
                 </label>
                 <input
                     type="text"
                     placeholder="Enter full name"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.fullName}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, fullName: e.target.value });
-
                         setErrors((prev) => {
                             const copy = { ...prev };
                             delete copy.fullName;
@@ -55,104 +72,101 @@ export default function StudentInfoStep() {
             </div>
 
             <div>
-                <label className="mb-1 block text-sm text-gray-600">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
                     Email address
                 </label>
                 <input
                     type="email"
                     placeholder="Enter email address"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.email}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, email: e.target.value });
-
                         setErrors((prev) => {
                             const copy = { ...prev };
                             delete copy.email;
                             return copy;
                         });
                     }}
-
                 />
                 {errors.email && (
                     <p className="mt-1 text-xs text-red-600">{errors.email}</p>
                 )}
             </div>
 
+            <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Country</label>
+                {isMounted ? (
+                    <Select
+                        options={countries}
+                        value={countries.find((c) => c.value === studentInfo.country)}
+                        onChange={(option) => {
+                            setStudentInfo({ ...studentInfo, country: option?.value || "" });
+                            setErrors((prev) => {
+                                const copy = { ...prev };
+                                delete copy.country;
+                                return copy;
+                            });
+                        }}
+                        styles={customStyles}
+                        placeholder="Select country..."
+                        isSearchable={true}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    />
+                ) : (
+                    <div className="h-[38px] w-full bg-gray-50 border border-gray-300 rounded-md"></div>
+                )}
+                {errors.country && (
+                    <p className="mt-1 text-xs text-red-600">{errors.country}</p>
+                )}
+            </div>
 
             <div>
-                <label className="mb-1 block text-sm text-gray-600">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
                     Phone number
                 </label>
-                <input
-                    type="tel"
-                    placeholder="+20 1xxxxxxxxx"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                <PhoneInput
+                    country={(studentInfo.country || "AE").toLowerCase()}
+                    enableSearch
                     value={studentInfo.phone}
-                    onChange={(e) => {
-                        setStudentInfo({ ...studentInfo, phone: e.target.value });
-
+                    onChange={(value, country) => {
+                        const selectedCountry = country as CountryData;
+                        setStudentInfo({
+                            ...studentInfo,
+                            phone: value,
+                            country: selectedCountry.countryCode.toUpperCase(),
+                        });
                         setErrors((prev) => {
                             const copy = { ...prev };
                             delete copy.phone;
                             return copy;
                         });
                     }}
+                    containerClass="!w-full"
+                    inputClass="!w-full !border-gray-300 !py-2.5 !text-sm !text-gray-900 !font-medium"
                 />
                 {errors.phone && (
                     <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
                 )}
             </div>
 
-
             <div>
-                <label className="mb-1 block text-sm text-gray-600">
-                    Country
-                </label>
-                <select
-                    value={studentInfo.country}
-                    onChange={(e) => {
-                        setStudentInfo({ ...studentInfo, country: e.target.value });
-
-                        setErrors((prev) => {
-                            const copy = { ...prev };
-                            delete copy.country;
-                            return copy;
-                        });
-                    }}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none">
-
-                    <option value="">Select country</option>
-                    <option>United Arab Emirates</option>
-                    <option>Egypt</option>
-                    <option>Austria</option>
-                    <option>United Kingdom</option>
-                </select>
-                {errors.country && (
-                    <p className="mt-1 text-xs text-red-600">{errors.country}</p>
-                )}
-            </div>
-
-
-            <div>
-                <label className="mb-1 block text-sm text-gray-600">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
                     City
                 </label>
                 <input
                     type="text"
                     placeholder="Enter city"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2  text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.city}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, city: e.target.value });
-
                         setErrors((prev) => {
                             const copy = { ...prev };
                             delete copy.city;
                             return copy;
                         });
                     }}
-
                 />
                 {errors.city && (
                     <p className="mt-1 text-xs text-red-600">{errors.city}</p>
@@ -160,24 +174,22 @@ export default function StudentInfoStep() {
             </div>
 
             <div>
-                <label className="mb-1 block text-sm text-gray-600">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
                     Address
                 </label>
                 <input
                     type="text"
                     placeholder="Enter address"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
                     value={studentInfo.address}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, address: e.target.value });
-
                         setErrors((prev) => {
                             const copy = { ...prev };
                             delete copy.address;
                             return copy;
                         });
                     }}
-
                 />
                 {errors.address && (
                     <p className="mt-1 text-xs text-red-600">{errors.address}</p>
@@ -185,27 +197,23 @@ export default function StudentInfoStep() {
             </div>
 
             <div>
-                <label className="mb-1 block text-sm font-medium text-gray-600">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
                     Number of sessions per month
                 </label>
-
-                <select
-                    value={sessionsPerMonth ?? ""}
-                    onChange={(e) => setSessionsPerMonth(Number(e.target.value))}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 placeholder:text-gray-400"
-                >
-                    <option value="">Select sessions</option>
-                    {[4, 8, 12, 16].map((n) => (
-
-                        <option key={n} value={n}>
-                            {n} sessions
-                        </option>
-                    ))}
-                </select>
+                {isMounted ? (
+                    <Select
+                        options={sessionOptions}
+                        value={sessionOptions.find(opt => opt.value === sessionsPerMonth)}
+                        onChange={(opt) => setSessionsPerMonth(opt?.value || 0)}
+                        styles={customStyles}
+                        isSearchable={false}
+                        placeholder="Select sessions"
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    />
+                ) : (
+                    <div className="h-[38px] w-full bg-gray-50 border border-gray-300 rounded-md"></div>
+                )}
             </div>
-
-
-
         </div>
     );
 }
