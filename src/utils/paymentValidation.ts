@@ -1,8 +1,5 @@
-export const validateCardData = (cardData: {
-    number: string;
-    expiry: string;
-    cvv: string;
-}): string | null => {
+import { CardData , BankData } from "@/types/order";
+export const validateCardData = (cardData: CardData): string | null => {
     if (!cardData.number || cardData.number.length !== 16) {
         return "Please enter a valid card number";
     }
@@ -20,10 +17,7 @@ export const validateCardData = (cardData: {
     return null;
 };
 
-export const validateBankData = (bankData: {
-    name: string;
-    account: string;
-}): string | null => {
+export const validateBankData = (bankData: BankData): string | null => {
     if (!bankData.name.trim()) {
         return "Please enter account holder name";
     }

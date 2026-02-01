@@ -1,4 +1,4 @@
-import { StudentInfo, DurationOption } from "@/types/order"; 
+import { CardData , BankData , StudentInfo, DurationOption } from "@/types/order"; 
 import { validateStudentInfo } from "./validateStudentInfo";
 import { validateCardData, validateBankData } from "./paymentValidation";
 
@@ -7,8 +7,8 @@ interface OrderValidationData {
   sessionsPerMonth: number | null;
   duration: DurationOption | null;
   paymentMethod: "card" | "bank" | null;
-  cardData: any;
-  bankData: any;
+  cardData: CardData;
+  bankData: BankData;
   acceptedTerms: boolean;
 }
 
