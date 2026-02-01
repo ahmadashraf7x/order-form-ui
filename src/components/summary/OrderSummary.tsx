@@ -165,16 +165,16 @@ export default function OrderSummary() {
 
             {result.discountRate > 0 && (
               <div className="flex justify-between text-green-600 font-medium">
-                <span>Discount</span>
-                <span>- ${result.discountAmount.toFixed(2)}</span>
+                <span>Total Discount</span>
+                <span>- ${result.totalDiscount.toFixed(2)}</span>
               </div>
             )}
 
             <hr className="my-2" />
 
             <div className="flex justify-between text-base font-semibold text-gray-900">
-              <span>Total</span>
-              <span>${result.finalTotal.toFixed(2)}</span>
+              <span>Total for {duration} months</span>
+              <span>${result.totalPrice.toFixed(2)}</span>
             </div>
           </>
         )}

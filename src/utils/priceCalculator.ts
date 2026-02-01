@@ -16,14 +16,22 @@ export function calculateTotalPrice(
     }
 
 
-    const discountAmount = baseMonthly * discountRate;
-    const monthlyAfterDiscount = baseMonthly - discountAmount;
-    const finalTotal = monthlyAfterDiscount * duration;
+
+const monthlyPrice = baseMonthly;
+const monthlyDiscount = monthlyPrice * discountRate;
+const totalDiscount = monthlyDiscount * duration;
+const monthlyPriceAfterDiscount = monthlyPrice - monthlyDiscount;
+const totalPrice = monthlyPriceAfterDiscount * duration;
+
+
 
     return {
-        monthlyPrice: baseMonthly,
+        monthlyPrice,
         discountRate,
-        discountAmount,
-        finalTotal,
+        monthlyDiscount,
+        monthlyPriceAfterDiscount,
+        totalPrice,
+        totalDiscount
+        
     };
 }
