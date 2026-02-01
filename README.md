@@ -72,13 +72,18 @@ src/
 ├─ services/
 │  └─ order.service.ts
 │
+├─ styles/
+│  └─ reactSelectStyles.ts
+│
 ├─ utils/
 │  ├─ priceCalculator.ts
-│  └─ validateStudentInfo.ts
+│  ├─ validateStudentInfo.ts
+│  └─ paymentValidation.ts
 │
 ├─ types/
 │  ├─ order.ts
-│  └─ pricing.ts
+│  ├─ pricing.ts
+│  └─ react-select-country-list.d.ts
 ```
 
 ---
@@ -95,7 +100,13 @@ src/
 
 3. **Payment Method**
    - Card / Bank transfer selection
+   - Conditional rendering of payment-specific fields
+   - Each payment method reveals its own input fields
+   - Field-level validation scoped per selected payment method
+   - Validation is triggered on final submission only
+   - Errors clear automatically when switching payment method or correcting inputs
    - Visual feedback + icons (Visa / Mastercard)
+
 
 4. **Order Summary**
    - Dynamic pricing based on user selections
@@ -141,6 +152,12 @@ This keeps business logic separate from UI components.
   - Appear only after submission attempt
   - Clear automatically per-field when corrected
   - Summary-level errors reset on relevant state changes
+- Conditional validation based on selected payment method
+- Payment-specific fields are validated only when active
+- Payment method validation logic is isolated in a dedicated utility with method-specific rules
+- Ensures clean separation between UI components and business validation logic
+
+ 
 
 This results in a clean and professional UX without noisy validation.
 
@@ -196,6 +213,16 @@ Accepts order payload and simulates order creation.
 - Reusable, isolated components
 - Readable naming conventions
 - Production-ready structure
+
+- Custom React-based select components used instead of native `<select>` elements
+- Applied to country selection and sessions-per-month inputs
+- Ensures consistent styling, better UX control, and seamless integration with validation logic
+
+- Isolated styling logic for custom React Select components
+- Styles are defined in a dedicated module to ensure reusability and clean separation from UI logic
+
+- Custom TypeScript declaration files added for third-party libraries lacking official typings
+- Improves type safety and developer experience
 
 ---
 
