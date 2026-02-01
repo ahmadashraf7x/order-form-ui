@@ -78,7 +78,8 @@ src/
 ├─ utils/
 │  ├─ priceCalculator.ts
 │  ├─ validateStudentInfo.ts
-│  └─ paymentValidation.ts
+│  ├─ paymentValidation.ts
+│  └─ orderValidation.ts
 │
 ├─ types/
 │  ├─ order.ts
@@ -156,6 +157,9 @@ This keeps business logic separate from UI components.
 - Payment-specific fields are validated only when active
 - Payment method validation logic is isolated in a dedicated utility with method-specific rules
 - Ensures clean separation between UI components and business validation logic
+- Final order submission validation is centralized in a dedicated utility function to validate cross-step dependencies and global form rules (terms acceptance, payment data, and required selections)
+
+
 
  
 
@@ -223,6 +227,8 @@ Accepts order payload and simulates order creation.
 
 - Custom TypeScript declaration files added for third-party libraries lacking official typings
 - Improves type safety and developer experience
+- Order-level business validation is abstracted into reusable utility modules to keep UI components lean and focused
+
 
 ---
 
