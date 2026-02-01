@@ -34,7 +34,7 @@ export default function StudentInfoStep() {
         { value: 16, label: "16 sessions" },
     ];
 
-    
+
 
     useEffect(() => {
         if (!submitAttempted) return;
@@ -59,11 +59,7 @@ export default function StudentInfoStep() {
                     value={studentInfo.fullName}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, fullName: e.target.value });
-                        setErrors((prev) => {
-                            const copy = { ...prev };
-                            delete copy.fullName;
-                            return copy;
-                        });
+
                     }}
                 />
                 {errors.fullName && (
@@ -82,11 +78,7 @@ export default function StudentInfoStep() {
                     value={studentInfo.email}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, email: e.target.value });
-                        setErrors((prev) => {
-                            const copy = { ...prev };
-                            delete copy.email;
-                            return copy;
-                        });
+
                     }}
                 />
                 {errors.email && (
@@ -101,12 +93,8 @@ export default function StudentInfoStep() {
                         options={countries}
                         value={countries.find((c) => c.value === studentInfo.country)}
                         onChange={(option) => {
-                            setStudentInfo({ ...studentInfo, country: option?.value || "" });
-                            setErrors((prev) => {
-                                const copy = { ...prev };
-                                delete copy.country;
-                                return copy;
-                            });
+                            setStudentInfo({ ...studentInfo, country: option?.value || "", phone: "" });
+
                         }}
                         styles={customStyles}
                         placeholder="Select country..."
@@ -136,11 +124,7 @@ export default function StudentInfoStep() {
                             phone: value,
                             country: selectedCountry.countryCode.toUpperCase(),
                         });
-                        setErrors((prev) => {
-                            const copy = { ...prev };
-                            delete copy.phone;
-                            return copy;
-                        });
+
                     }}
                     containerClass="!w-full"
                     inputClass="!w-full !border-gray-300 !py-2.5 !text-sm !text-gray-900 !font-medium"
@@ -161,11 +145,7 @@ export default function StudentInfoStep() {
                     value={studentInfo.city}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, city: e.target.value });
-                        setErrors((prev) => {
-                            const copy = { ...prev };
-                            delete copy.city;
-                            return copy;
-                        });
+
                     }}
                 />
                 {errors.city && (
@@ -184,11 +164,7 @@ export default function StudentInfoStep() {
                     value={studentInfo.address}
                     onChange={(e) => {
                         setStudentInfo({ ...studentInfo, address: e.target.value });
-                        setErrors((prev) => {
-                            const copy = { ...prev };
-                            delete copy.address;
-                            return copy;
-                        });
+
                     }}
                 />
                 {errors.address && (
