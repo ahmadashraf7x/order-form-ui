@@ -7,9 +7,11 @@ import { calculateTotalPrice } from "@/utils/priceCalculator";
 import { PricingConfig } from "@/types/pricing";
 import { submitOrder } from "@/services/order.service";
 import { validateStudentInfo } from "@/utils/validateStudentInfo";
+import { validateCardData, validateBankData } from "@/utils/paymentValidation";
+
 
 export default function OrderSummary() {
-  const { duration, sessionsPerMonth, payInAdvance, paymentMethod, studentInfo, submitAttempted, setSubmitAttempted } = useOrder();
+  const { duration, sessionsPerMonth, payInAdvance, paymentMethod, studentInfo, submitAttempted, setSubmitAttempted, cardData, bankData } = useOrder();
   const [pricing, setPricing] = useState<PricingConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +38,7 @@ export default function OrderSummary() {
   useEffect(() => {
     setSuccess(false);
     setSubmitError(null);
-  }, [sessionsPerMonth, duration, paymentMethod, acceptedTerms, studentInfo]);
+  }, [sessionsPerMonth, duration, paymentMethod, acceptedTerms, studentInfo, cardData, bankData]);
 
   const handleOrderNow = async () => {
     setSubmitAttempted(true);
@@ -63,6 +65,23 @@ export default function OrderSummary() {
       setSubmitError("Please select a payment method");
       return;
     }
+
+    if (paymentMethod === "card") {
+      const cardError = validateCardData(cardData);
+      if (cardError) {
+        setSubmitError(cardError);
+        return;
+      }
+    }
+
+    if (paymentMethod === "bank") {
+      const bankError = validateBankData(bankData);
+      if (bankError) {
+        setSubmitError(bankError);
+        return;
+      }
+    }
+
 
     if (!acceptedTerms) {
       setSubmitError("You must accept the Terms & Conditions");

@@ -17,6 +17,17 @@ type OrderContextType = {
   setPaymentMethod: (m: paymentMethod) => void;
   submitAttempted: boolean;
   setSubmitAttempted: (v: boolean) => void;
+  cardData: {
+    number: string;
+    expiry: string;
+    cvv: string;
+  };
+  setCardData: (data: { number: string; expiry: string; cvv: string }) => void;
+  bankData: {
+    name: string;
+    account: string;
+  };
+  setBankData: (data: { name: string; account: string }) => void;
 
 };
 
@@ -36,6 +47,16 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     city: "",
     address: "",
   });
+  const [cardData, setCardData] = useState({
+    number: "",
+    expiry: "",
+    cvv: "",
+  });
+
+  const [bankData, setBankData] = useState({
+    name: "",
+    account: "",
+  });
 
 
   return (
@@ -53,6 +74,10 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
         setPaymentMethod,
         submitAttempted,
         setSubmitAttempted,
+        cardData,
+        setCardData,
+        bankData,
+        setBankData,
       }}
     >
       {children}
