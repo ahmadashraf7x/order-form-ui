@@ -4,7 +4,7 @@ export async function GET() {
   return NextResponse.json({
     pricePerSession: 20,
     discounts: {
-      6: 0,
+      6: 0.02,
       9: 0.05,
       12: 0.1,
       18: 0.15,
