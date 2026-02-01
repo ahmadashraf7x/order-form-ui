@@ -6,8 +6,8 @@ import { fetchPricingConfig } from "@/api/pricing.api";
 import { calculateTotalPrice } from "@/utils/priceCalculator";
 import { PricingConfig } from "@/types/pricing";
 import { submitOrder } from "@/services/order.service";
-import { validateStudentInfo } from "@/utils/validateStudentInfo";
-import { validateCardData, validateBankData } from "@/utils/paymentValidation";
+import { validateOrderForm } from "@/utils/orderValidation";
+
 
 
 export default function OrderSummary() {
@@ -19,6 +19,9 @@ export default function OrderSummary() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+
+
 
   useEffect(() => {
     const loadPricing = async () => {
@@ -44,47 +47,21 @@ export default function OrderSummary() {
     setSubmitAttempted(true);
     setSubmitError(null);
     setSuccess(false);
+    const validationError = validateOrderForm({
+      studentInfo,
+      sessionsPerMonth,
+      duration,
+      paymentMethod,
+      cardData,
+      bankData,
+      acceptedTerms
+    });
 
-    const studentErrors = validateStudentInfo(studentInfo);
-    if (Object.keys(studentErrors).length > 0) {
-      setSubmitError("Please fill all required student information");
+    if (validationError) {
+      setSubmitError(validationError);
       return;
     }
-
-    if (!sessionsPerMonth) {
-      setSubmitError("Please select number of sessions");
-      return;
-    }
-
-    if (!duration) {
-      setSubmitError("Please select duration");
-      return;
-    }
-
-    if (!paymentMethod) {
-      setSubmitError("Please select a payment method");
-      return;
-    }
-
-    if (paymentMethod === "card") {
-      const cardError = validateCardData(cardData);
-      if (cardError) {
-        setSubmitError(cardError);
-        return;
-      }
-    }
-
-    if (paymentMethod === "bank") {
-      const bankError = validateBankData(bankData);
-      if (bankError) {
-        setSubmitError(bankError);
-        return;
-      }
-    }
-
-
-    if (!acceptedTerms) {
-      setSubmitError("You must accept the Terms & Conditions");
+    if (!canCalculate) {
       return;
     }
 
