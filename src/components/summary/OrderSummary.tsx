@@ -134,19 +134,29 @@ export default function OrderSummary() {
       <h2 className="mb-4 text-xl font-semibold text-gray-900">
         Order Summary
       </h2>
+      {!result && (
+        <p className="mb-4 rounded bg-blue-50 px-3 py-2 text-xs text-blue-700 border border-blue-100">
+          {!duration && !sessionsPerMonth
+            ? "Please select a duration and number of sessions to see pricing."
+            : !duration
+              ? "Please select a duration to see the final price."
+              : "Please select sessions per month to calculate total."}
+        </p>
+      )}
 
       <div className="space-y-3 text-sm text-gray-700">
         <div className="flex justify-between">
           <span>Duration</span>
           <span className="font-medium text-gray-900">
-            {duration} months
+            {duration ? `${duration} months` : "—"}
+
           </span>
         </div>
 
         <div className="flex justify-between">
           <span>Sessions / month</span>
           <span className="font-medium text-gray-900">
-            {sessionsPerMonth}
+            {sessionsPerMonth ?? "—"}
           </span>
         </div>
 
@@ -157,7 +167,7 @@ export default function OrderSummary() {
               ? paymentMethod === "card"
                 ? "Card"
                 : "Bank transfer"
-              : "Not selected"}
+              : "—"}
           </span>
         </div>
         {payInAdvance && (
@@ -221,10 +231,10 @@ export default function OrderSummary() {
         <button
           type="button"
           onClick={handleOrderNow}
-          disabled={submitting}
+          disabled={submitting || success}
           className="mt-4 w-full rounded-md bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          {submitting ? "Submitting..." : "Order Now"}
+          {submitting ? "Submitting..." : success ? "Submitted Successfully!" : "Order Now"}
         </button>
 
 
